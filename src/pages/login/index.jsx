@@ -4,7 +4,6 @@ import logo from './logo.png';
 import './index.less';
 class Login extends Component {
   validator = (error,content,callback) => {
-    console.log(error,content);
     const name = error.field==='username'?'用户名':'密码'
     if(!content) {
       callback(`${name}不能为空`);
@@ -18,9 +17,20 @@ class Login extends Component {
       callback();
     }
   }
+  login = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((error,msg) => {
+      if(!error) {
+        this.props.history.push('/');
+      }else {
+        console.log(error);
+      }
+    })
+  }
+
   render() {
     const Item = Form.Item;
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator,validateFields } = this.props.form;
     return <div className="login">
       <header className="login-header">
         <h1><img src={logo} alt="logo图" className="logo"/></h1>
@@ -33,7 +43,7 @@ class Login extends Component {
         {/*  <input type="password" placeholder="密码"/>*/}
         {/*  <input type="submit" value="登录" className="login-btn"/>*/}
         {/*</form>*/}
-        <Form className="login-form" >
+        <Form className="login-form" onSubmit={this.login}>
           <h3>用户登录</h3>
           <Item>
             {
