@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd';
 import logo from './logo.png';
 import './index.less';
 class Login extends Component {
@@ -30,7 +30,7 @@ class Login extends Component {
 
   render() {
     const Item = Form.Item;
-    const { getFieldDecorator,validateFields } = this.props.form;
+    const { getFieldDecorator} = this.props.form;
     return <div className="login">
       <header className="login-header">
         <h1><img src={logo} alt="logo图" className="logo"/></h1>
