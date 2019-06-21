@@ -3,6 +3,21 @@ import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import logo from './logo.png';
 import './index.less';
 class Login extends Component {
+  validator = (error,content,callback) => {
+    console.log(error,content);
+    const name = error.field==='username'?'用户名':'密码'
+    if(!content) {
+      callback(`${name}不能为空`);
+    }else if(content.length<4){
+      callback(`${name}不能少于四位`);
+    }else if(content.length>13){
+      callback(`${name}不能大于13位`);
+    }else if(!/^[a-zA-Z0-9_]+$/.test(content)){
+      callback(`${name}输入的字符必须是数组字母下划线`);
+    }else {
+      callback();
+    }
+  }
   render() {
     const Item = Form.Item;
     const { getFieldDecorator } = this.props.form;
@@ -22,8 +37,11 @@ class Login extends Component {
           <h3>用户登录</h3>
           <Item>
             {
-              getFieldDecorator("username"
-
+              getFieldDecorator("username",{
+                rules:[{
+                  validator: this.validator
+                }]
+              }
               )(
                 <Input prefix={<Icon type="user"  />}
                        placeholder="用户名" className="setWidth"/>
@@ -32,8 +50,11 @@ class Login extends Component {
           </Item>
           <Item>
             {
-              getFieldDecorator("password"
-
+              getFieldDecorator("password",{
+                  rules:[{
+                    validator: this.validator
+                  }]
+                }
               )(
                 <Input prefix={<Icon type="lock"  />}
                        placeholder="密码" className="setWidth"/>
