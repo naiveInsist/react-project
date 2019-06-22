@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Icon, Input, Button,message } from 'antd';
+import axios from 'axios';
 import logo from './logo.png';
 import './index.less';
 class Login extends Component {
@@ -21,7 +22,21 @@ class Login extends Component {
     e.preventDefault();
     this.props.form.validateFields((error,msg) => {
       if(!error) {
-        this.props.history.push('/');
+        const { username,password } = msg;
+        axios.post('/login',{ username,password })
+          .then((res) => {
+            const data = res.data;
+            if(data.status === 0){
+              this.props.history.push('/');
+            } else {
+              message.error('用户名或密码错误');
+              this.props.form.resetFields(['password']);
+            }
+          })
+          .catch((res) => {
+            message.error('网络故障，请稍后重试');
+            this.props.form.resetFields(['password']);
+          })
       }else {
         console.log(error);
       }
@@ -67,7 +82,7 @@ class Login extends Component {
                 }
               )(
                 <Input prefix={<Icon type="lock"  />}
-                       placeholder="密码" className="setWidth"/>
+                       placeholder="密码" className="setWidth" type="password"/>
               )
             }
           </Item>
