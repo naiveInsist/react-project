@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button,message } from 'antd';
-import axios from 'axios';
+import { Form, Icon, Input, Button } from 'antd';
 import logo from './logo.png';
 import './index.less';
+import { login } from '../../api'
 class Login extends Component {
   validator = (error,content,callback) => {
     const name = error.field==='username'?'用户名':'密码'
@@ -20,25 +20,18 @@ class Login extends Component {
   }
   login = (e) => {
     e.preventDefault();
-    this.props.form.validateFields((error,msg) => {
+    this.props.form.validateFields(async (error,msg) => {
       if(!error) {
         const { username,password } = msg;
-        axios.post('/login',{ username,password })
-          .then((res) => {
-            const data = res.data;
-            if(data.status === 0){
-              this.props.history.push('/');
-            } else {
-              message.error('用户名或密码错误');
-              this.props.form.resetFields(['password']);
-            }
-          })
-          .catch((res) => {
-            message.error('网络故障，请稍后重试');
-            this.props.form.resetFields(['password']);
-          })
+        const result = await login(username,password);
+        if(result){
+          this.props.history.replace('/');
+        } else {
+          // message.error(2);
+          this.props.form.resetFields(['password']);
+        }
       }else {
-        console.log(error);
+        console.log('登录校验失败');
       }
     })
   }
