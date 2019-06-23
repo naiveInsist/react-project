@@ -1,4 +1,4 @@
-export default const menuList = [
+const menuList = [
   {
     title: '首页', // 菜单标题名称
     key: '/home', // 对应的path
@@ -55,4 +55,4 @@ export default const menuList = [
     ]
   },
 ]
-
+export default menuList;
