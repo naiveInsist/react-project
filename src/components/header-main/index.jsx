@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 import { getItem,removeItem } from '../../utils/localstorage.tools';
 import { reqWeather } from '../../api';
 import './index.less';
+import menuList from '../../config/menu.config';
 class HeaderMain extends Component {
   state = {
     currentTime: Date.now(),
@@ -14,7 +15,12 @@ class HeaderMain extends Component {
   }
   componentWillMount() {
     this.username = getItem().username;
+    this.showMessage(this.props);
   }
+  componentWillReceiveProps(nextProps) {
+    this.showMessage(nextProps);
+  }
+
   async componentDidMount() {
     setInterval(() => {
       this.setState({
@@ -36,6 +42,26 @@ class HeaderMain extends Component {
       }
     })
   }
+  showMessage = (props) => {
+    const { pathname } = props.location;
+    for (let i = 0; i < menuList.length; i++) {
+      const menu = menuList[i];
+      if(menu.children) {
+        for( let j = 0; j < menu.children.length; j++) {
+          const item = menu.children[j];
+          if(item.key === pathname) {
+            this.content = item.title;
+            return ;
+          }
+        }
+      } else {
+        if(menu.key === pathname) {
+          this.content = menu.title;
+          return ;
+        }
+      }
+    }
+  }
   render() {
     const { currentTime,weather,weatherImg } = this.state;
     return <div>
@@ -44,7 +70,7 @@ class HeaderMain extends Component {
         <MyButton onClick={this.handleClick}>退出</MyButton>
       </div>
       <div className="header-main-bottom">
-        <span className="header-main-left">用户管理</span>
+        <span className="header-main-left">{this.content}</span>
         <div className="header-main-right">
           <span>{dayjs(currentTime).format('YYYY-MM-DD hh:mm:ss')}</span>
           <img src={weatherImg} alt=""/>

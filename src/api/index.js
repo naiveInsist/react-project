@@ -16,3 +16,4 @@ export const reqWeather = () => {
     })
   })
 }
+export const reqCategories = (parentId) => ajax('/manage/category/list',{parentId});
