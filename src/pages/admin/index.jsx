@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Layout } from 'antd';
 import Nav from '../../components/left-nav';
 import HeaderMain from '../../components/header-main';
+import { getItem } from '../../utils/localstorage.tools';
+import { reqValidate } from '../../api'
 const { Header, Content, Footer, Sider } = Layout;
 // const { SubMenu } = Menu;
 
@@ -14,6 +16,15 @@ export default class Admin extends Component {
     console.log(collapsed);
     this.setState({ collapsed });
   };
+  async componentWillMount() {
+    const data = getItem();
+    if( data && data._id) {
+       const result = await reqValidate(data._id);
+       console.log(result);
+       if (result) return;
+    }
+    this.props.history.replace('/login');
+  }
 
   render() {
     return (

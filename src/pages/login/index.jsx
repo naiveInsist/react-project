@@ -3,7 +3,7 @@ import {Form, Icon, Input, Button} from 'antd';
 import logo from '../../assets/images/logo.png';
 import './index.less';
 import {login} from '../../api'
-
+import { setItem } from '../../utils/localstorage.tools';
 function Login(props) {
   const validator = (error, content, callback) => {
     const name = error.field === 'username' ? '用户名' : '密码'
@@ -26,6 +26,7 @@ function Login(props) {
         const {username, password} = msg;
         const result = await login(username, password);
         if (result) {
+          setItem(result.data);
           props.history.replace('/');
         } else {
           // message.error(2);
