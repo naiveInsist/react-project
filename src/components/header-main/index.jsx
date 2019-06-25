@@ -22,14 +22,20 @@ class HeaderMain extends Component {
   }
 
   async componentDidMount() {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.setState({
         currentTime: Date.now()
       })
     },1000)
-    const weather = await reqWeather();
+    const { promise,cancel } = reqWeather();
+    this.cancel = cancel;
+    const weather = await promise;
     this.setState({...weather});
   }
+componentWillUnmount() {
+    clearInterval(this.timer);
+    this.cancel();
+}
 
   handleClick = () => {
     Modal.confirm({

@@ -19,6 +19,8 @@ const { Header, Content, Footer, Sider } = Layout;
 export default class Admin extends Component {
   state = {
     collapsed: false,
+    isLoading:true,
+    success:false
   };
 
   onCollapse = collapsed => {
@@ -29,42 +31,46 @@ export default class Admin extends Component {
     const data = getItem();
     if( data && data._id) {
        const result = await reqValidate(data._id);
-       console.log(result);
-       if (result) return;
+       if (result) return this.setState({
+         isLoading:false,
+         success:true
+       });
     }
-    this.props.history.replace('/login');
+    this.setState({
+      isLoading:false,
+      success:false
+    })
   }
 
   render() {
-    return (
-      <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
-          <Nav collapsed={this.state.collapsed}/>
-        </Sider>
-        <Layout>
-          <Header style={{ background: '#fff', padding: 0,minHeight:100 }} >
-            <HeaderMain />
-          </Header>
-          <Content style={{ margin: '25px 16px' }}>
-            <div style={{ background: '#fff', minHeight: 360 }}>
-              <Switch>
-                <Route path='/home' component={Home}/>
-                <Route path='/product' component={Product}/>
-                <Route path='/category' component={Category}/>
-                <Route path='/user' component={User}/>
-                <Route path='/role' component={Role}/>
-                <Route path='/charts/bar' component={Bar}/>
-                <Route path='/charts/line' component={Line}/>
-                <Route path='/charts/pie' component={Pie}/>
-                <Redirect to="/home"/>
-              </Switch>
-            </div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            推荐使用谷歌浏览器，可以获得更佳页面操作体验
-          </Footer>
-        </Layout>
+    if(this.state.isLoading) return null;
+    return this.state.success? <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+        <Nav collapsed={this.state.collapsed}/>
+      </Sider>
+      <Layout>
+        <Header style={{ background: '#fff', padding: 0,minHeight:100 }} >
+          <HeaderMain />
+        </Header>
+        <Content style={{ margin: '25px 16px' }}>
+          <div style={{ background: '#fff', minHeight: 360 }}>
+            <Switch>
+              <Route path='/home' component={Home}/>
+              <Route path='/product' component={Product}/>
+              <Route path='/category' component={Category}/>
+              <Route path='/user' component={User}/>
+              <Route path='/role' component={Role}/>
+              <Route path='/charts/bar' component={Bar}/>
+              <Route path='/charts/line' component={Line}/>
+              <Route path='/charts/pie' component={Pie}/>
+              <Redirect to="/home"/>
+            </Switch>
+          </div>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>
+          推荐使用谷歌浏览器，可以获得更佳页面操作体验
+        </Footer>
       </Layout>
-    );
+    </Layout> : <Redirect to="/login"/>
   }
 }

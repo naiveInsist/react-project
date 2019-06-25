@@ -10,8 +10,8 @@ const {SubMenu} = Menu;
 class Nav extends Component {
   componentWillMount() {
     const Item = Menu.Item;
-    console.log(this)
     const {pathname} = this.props.location;
+    let isHome = true;
     this.menuList = menuList.map((item) => {
       if (item.children) {
         return <SubMenu
@@ -27,12 +27,14 @@ class Nav extends Component {
             item.children.map((list) => {
               if (list.key === pathname) {
                 this.openKey = item.key;
+                isHome = false;
               }
               return createItem(list);
             })
           }
         </SubMenu>
       } else {
+        if(item.key === pathname) isHome = false;
         return createItem(item);
       }
       function createItem(item) {
@@ -44,7 +46,7 @@ class Nav extends Component {
         </Item>
       }
     });
-    this.pathname = pathname;
+    this.pathname = isHome?'/home':pathname;
   }
 
   render() {
