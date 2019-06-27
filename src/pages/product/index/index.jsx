@@ -7,24 +7,37 @@ const { Option } = Select;
 
 export default class Index extends Component {
   state = {
-    products:[]
+    products:[],
+    total:0,
+    // product:null
   }
-  async componentDidMount() {
-    const result = await reqProducts(1,3);
+  componentDidMount() {
+    this.getProducts(1,3);
+  }
+  getProducts = async (pageNum,pageSize) => {
+    const result = await reqProducts(pageNum,pageSize);
     this.setState({
-      products:result.data.list
+      products:result.data.list,
+      total:result.data.total
     })
   }
-
+  pageChange = (pageNum,pageSize) => {
+    this.getProducts(pageNum,pageSize);
+  }
+  addProduct = () => {
+    this.props.history.push('/product/saveupdate');
+  }
+  updateProduct = (product) => {
+    return () => {
+      // this.setState({
+      //   product
+      // });
+      this.props.history.push('/product/saveupdate',product)
+    }
+  }
   render() {
     const { products } = this.state
-    console.log(products);
-    // const products = [{
-    //   key:1,
-    //   name:"xsh",
-    //   desc:'sss',
-    //   price:4000
-    // }];
+
     const columns = [
       {
         title:'商品名称',
@@ -55,11 +68,11 @@ export default class Index extends Component {
       {
         className:'start-Set',
         title:'操作',
-        dataIndex:'detail',
+        // dataIndex:'detail',
         render: product => {
           return <div>
             <MyButton>详情</MyButton>
-            <MyButton>修改</MyButton>
+            <MyButton onClick={this.updateProduct(product)}>修改</MyButton>
           </div>
         }
       }
@@ -74,17 +87,20 @@ export default class Index extends Component {
         <Button type="primary" htmlType="submit">搜索</Button>
       </div>
     }
-       extra={<Button type="primary"><Icon type="plus"/>&nbsp;添加产品</Button>}
+       extra={<Button type="primary"  onClick={this.addProduct}><Icon type="plus"/>&nbsp;添加产品</Button>}
     >
       <Table
         columns={columns}
         dataSource={products}
         bordered
         pagination={{
+          showQuickJumper:true,
           showSizeChanger:true,
           pageSizeOptions:['3', '6' , '9' , '12'],
           defaultPageSize:3,
-          showQuickJumper:true,
+          total:this.state.total,
+          onChange:this.pageChange,
+          onShowSizeChange:this.pageChange
         }}
         rowKey="_id"
       />

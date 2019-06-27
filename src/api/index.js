@@ -26,3 +26,4 @@ export const reqCategories = (parentId) => ajax('/manage/category/list',{parentI
 export const reqAddCategory = (parentId,categoryName) => ajax('/manage/category/add',{parentId,categoryName},'post')
 export const reqUpdateCategory = (categoryId,categoryName) => ajax('/manage/category/update',{categoryId,categoryName},'post')
 export const reqProducts = (pageNum,pageSize) => ajax('/manage/product/list',{pageNum,pageSize},'get')
+export const reqAddProduct = ({name,desc,price,categoryId,pCategoryId,detail}) => ajax('/manage/product/add',{name,desc,price,categoryId,pCategoryId,detail},'post')

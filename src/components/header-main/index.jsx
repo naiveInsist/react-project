@@ -49,7 +49,11 @@ componentWillUnmount() {
     })
   }
   showMessage = (props) => {
-    const { pathname } = props.location;
+    let { pathname } = props.location;
+    const testReg = /^\/product\//;
+    if(testReg.test(pathname)){
+      pathname = '/product';
+    }
     for (let i = 0; i < menuList.length; i++) {
       const menu = menuList[i];
       if(menu.children) {

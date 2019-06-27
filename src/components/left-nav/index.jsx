@@ -10,7 +10,11 @@ const {SubMenu} = Menu;
 class Nav extends Component {
   componentWillMount() {
     const Item = Menu.Item;
-    const {pathname} = this.props.location;
+    let {pathname} = this.props.location;
+    const testReg = /^\/product\//;
+    if(testReg.test(pathname)){
+      pathname = '/product';
+    }
     let isHome = true;
     this.menuList = menuList.map((item) => {
       if (item.children) {
