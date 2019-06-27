@@ -27,7 +27,6 @@ class SaveUpdate extends Component {
   getCategories = async (parentId) => {
     const result = await reqCategories(parentId);
     if (result) {
-      console.log(result);
       if (parentId === '0') {
         this.setState({
           options: result.data.map((item, index) => {
@@ -107,7 +106,6 @@ class SaveUpdate extends Component {
   }
   addProductRef = React.createRef();
   render() {
-    console.log(this.categoriesId);
   const formItemLayout = {
     labelCol: {
       xs: {span: 24},
@@ -193,7 +191,7 @@ class SaveUpdate extends Component {
         }
       </Item>
       <Item label="商品详情" wrapperCol={{span: 20}}>
-        <RichText ref={this.addProductRef}/>
+        <RichText ref={this.addProductRef} detail={product?product.detail:''}/>
       </Item>
       <Item>
         <Button type="primary" htmlType="submit" className="add-product-btn">提交</Button>
