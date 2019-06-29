@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { EditorState, convertToRaw,ContentState } from 'draft-js';
+import { EditorState,ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
+// import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 export default class RichText extends Component {
   constructor(props) {
     super(props);
     const contentBlock = htmlToDraft(this.props.detail);
-    console.log(this.props.detail);
     if (contentBlock) {
       const contentState = ContentState.createFromBlockArray(contentBlock.contentBlocks);
       const editor = EditorState.createWithContent(contentState);

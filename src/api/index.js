@@ -27,3 +27,11 @@ export const reqAddCategory = (parentId,categoryName) => ajax('/manage/category/
 export const reqUpdateCategory = (categoryId,categoryName) => ajax('/manage/category/update',{categoryId,categoryName},'post')
 export const reqProducts = (pageNum,pageSize) => ajax('/manage/product/list',{pageNum,pageSize},'get')
 export const reqAddProduct = ({name,desc,price,categoryId,pCategoryId,detail}) => ajax('/manage/product/add',{name,desc,price,categoryId,pCategoryId,detail},'post')
+
+export const reqDeletePicture = (id,name) => ajax('/manage/img/delete',{id,name},'post');
+export const reqUpdateProductState = (productId,status) => ajax('/manage/product/updateStatus',{productId,status},'post');
+export const reqSearchProduct = ({searchType, searchContent, pageSize, pageNum}) => ajax('/manage/product/search',{[searchType]:searchContent, pageSize, pageNum})
+
+export const reqRoles = () => ajax('/manage/role/list',{});
+export const reqAddRole = (name) => ajax('/manage/role/add',{name},'post');
+export const reqUpdateRole = ({auth_name,_id,menus}) => ajax('/manage/role/update',{auth_name,_id,menus},'post');

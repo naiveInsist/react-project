@@ -3,6 +3,7 @@ import {Card, Input, Form, Icon, Button, Cascader, InputNumber} from 'antd';
 import './index.less';
 import {convertToRaw} from 'draft-js';
 import draftToHtml from 'draftjs-to-html';
+import PictureWall from './picture-wall';
 import {reqCategories, reqAddProduct} from '../../../api'
 import RichText from './rich-text';
 
@@ -189,6 +190,9 @@ class SaveUpdate extends Component {
             />
           )
         }
+      </Item>
+      <Item>
+        {product?<PictureWall imgs={product?product.imgs:[]} id={product?product._id:''}/>:null}
       </Item>
       <Item label="商品详情" wrapperCol={{span: 20}}>
         <RichText ref={this.addProductRef} detail={product?product.detail:''}/>
