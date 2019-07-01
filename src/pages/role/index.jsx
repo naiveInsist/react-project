@@ -80,12 +80,11 @@ export default class Role extends Component {
     const result = await reqUpdateRole({menus,_id,auth_name});
     if(result) {
       message.success('设置权限成功');
-      console.log(result);
       this.updateRoleForm.props.form.resetFields();
       this.setState({
         isShowUpdateRoleModal: false,
         roles:this.state.roles.map((role) => {
-          if(role._id = _id){
+          if(role._id === _id){
             return result.data;
           }
           return role;

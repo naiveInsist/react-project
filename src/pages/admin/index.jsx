@@ -20,31 +20,30 @@ export default class Admin extends Component {
   state = {
     collapsed: false,
     isLoading:true,
-    success:false
+    success:[]
   };
 
   onCollapse = collapsed => {
-    console.log(collapsed);
     this.setState({ collapsed });
   };
   async componentWillMount() {
     const data = getItem();
     if( data && data._id) {
        const result = await reqValidate(data._id);
+       const menus = getItem().role.menus;
        if (result) return this.setState({
          isLoading:false,
-         success:true
+         success:menus
        });
     }
     this.setState({
       isLoading:false,
-      success:false
     })
   }
 
   render() {
     if(this.state.isLoading) return null;
-    return this.state.success? <Layout style={{ minHeight: '100vh' }}>
+    return this.state.success.length? <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
         <Nav collapsed={this.state.collapsed}/>
       </Sider>
@@ -55,15 +54,39 @@ export default class Admin extends Component {
         <Content style={{ margin: '25px 16px' }}>
           <div style={{ background: '#fff', minHeight: 360 }}>
             <Switch>
-              <Route path='/home' component={Home}/>
-              <Route path='/product' component={Product}/>
-              <Route path='/category' component={Category}/>
-              <Route path='/user' component={User}/>
-              <Route path='/role' component={Role}/>
-              <Route path='/charts/bar' component={Bar}/>
-              <Route path='/charts/line' component={Line}/>
-              <Route path='/charts/pie' component={Pie}/>
-              <Redirect to="/home"/>
+              {/*<Route path='/home' component={Home}/>*/}
+              {/*<Route path='/product' component={Product}/>*/}
+              {/*<Route path='/category' component={Category}/>*/}
+              {/*<Route path='/user' component={User}/>*/}
+              {/*<Route path='/role' component={Role}/>*/}
+              {/*<Route path='/charts/bar' component={Bar}/>*/}
+              {/*<Route path='/charts/line' component={Line}/>*/}
+              {/*<Route path='/charts/pie' component={Pie}/>*/}
+              {/*<Redirect to="/home"/>*/}
+              {
+                this.state.success.map((curr) => {
+                  switch (curr) {
+                    case '/home':
+                      return <Route path='/home' key={curr} component={Home}/>
+                    case '/product':
+                      return <Route path='/product' key={curr} component={Product}/>
+                    case '/category':
+                      return <Route path='/category' key={curr} component={Category}/>
+                    case '/user':
+                      return <Route path='/user' key={curr} component={User}/>
+                    case '/role':
+                      return <Route path='/role' key={curr} component={Role}/>
+                    case '/charts/bar':
+                      return <Route path='/charts/bar' key={curr} component={Bar}/>
+                    case '/charts/line':
+                      return <Route path='/charts/line' key={curr} component={Line}/>
+                    case '/charts/pie':
+                      return <Route path='/charts/pie' key={curr} component={Pie}/>
+                    default :
+                      return null
+                  }
+                })
+              }
             </Switch>
           </div>
         </Content>

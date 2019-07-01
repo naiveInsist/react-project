@@ -37,7 +37,6 @@ export default class Index extends Component {
     }
 
     const result = await promise;
-    console.log(result);
     if (result) {
       this.setState({
         total: result.data.total,

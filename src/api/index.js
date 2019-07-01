@@ -35,3 +35,8 @@ export const reqSearchProduct = ({searchType, searchContent, pageSize, pageNum})
 export const reqRoles = () => ajax('/manage/role/list',{});
 export const reqAddRole = (name) => ajax('/manage/role/add',{name},'post');
 export const reqUpdateRole = ({auth_name,_id,menus}) => ajax('/manage/role/update',{auth_name,_id,menus},'post');
+
+export const reqGetUsers = () => ajax('/manage/user/list');
+export const reqAddUser = ({ username,password,email,phone,role_id}) => ajax('/manage/user/add', {username, password, phone, email, role_id}, 'POST');
+export const reqDeleteUser = (userId) => ajax('/manage/user/delete',{userId},'post')
+export const reqUpdateUser = ({username,password,email,phone,_id}) => ajax('/manage/user/update',{username,password,email,phone,_id},'post')

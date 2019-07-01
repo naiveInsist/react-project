@@ -15,8 +15,8 @@ class UpdateUserForm extends Component {
         <Item label='用户名' labelCol={{span: 6}}  wrapperCol={{span: 15}}>
           {
             getFieldDecorator(
-              'name',
-              {initialValue: ''}
+              'username',
+              {initialValue: this.props.user.username}
             )(
               <Input placeholder='请输入用户名'/>
             )
@@ -26,7 +26,7 @@ class UpdateUserForm extends Component {
           {
             getFieldDecorator(
               'phone',
-              {initialValue: ''}
+              {initialValue: this.props.user.phone}
             )(
               <Input placeholder='请输入手机号'/>
             )
@@ -36,7 +36,7 @@ class UpdateUserForm extends Component {
           {
             getFieldDecorator(
               'email',
-              {initialValue: ''}
+              {initialValue: this.props.user.email}
             )(
               <Input placeholder='请输入邮箱'/>
             )
@@ -45,11 +45,16 @@ class UpdateUserForm extends Component {
         <Item label='角色' labelCol={{span: 6}}  wrapperCol={{span: 15}}>
           {
             getFieldDecorator(
-              'role'
+              'role',{
+                initialValue:this.props.user.role_id
+              }
             )(
               <Select placeholder='请选择分类'>
-                <Option value='1'>1</Option>
-                <Option value='2'>2</Option>
+                {
+                  this.props.roles.map((item) =>{
+                    return <Option value={item._id} key={item._id}>{item.name}</Option>
+                  })
+                }
               </Select>
             )
           }
